@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ConvexClient } from "convex/browser";
+import { ConvexClientProvider } from "@/components/providers/convex-provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistSans = inter; // Fix the font declaration
+const geistMono = 'Inter_Mono'; // Change the variable name to match the font
 
 export const metadata: Metadata = {
   title: "NoteSphere",
@@ -25,10 +25,10 @@ export const metadata: Metadata = {
       },
       {
         media: "(prefers-color-scheme: dark)",
-        url: "/favicon-light.png",
-        href: "/favicon-light.png",
-      }
-    ]
+        url: "/favicon-dark.png", // Fix the dark theme favicon
+        href: "/favicon-dark.png",
+      },
+    ],
   },
 };
 
@@ -39,16 +39,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-          storageKey="notesphere-theme-2"
-        >
-        {children}
-        </ThemeProvider>
+      <body className={inter.className}>
+        <ConvexClientProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            storageKey="notesphere-theme-2"
+          >
+            {children}
+          </ThemeProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   );
